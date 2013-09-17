@@ -1,0 +1,48 @@
+#!/bin/bash
+
+######################################################################
+# generate libsndfile wrapped class for android use SWIG
+#
+# Author: Royer Wang
+
+
+# check wheater swig exist
+if !(type -p swig > /dev/null 2>&1); then
+	echo need swig. http://www.swig.org
+	exit 1
+fi
+
+SWIG_VERSION=$(echo $(swig -version 2>&1 | awk '/Version/ {print $3}'))
+if [[ "$SWIG_VERSION" < "2.0" ]] ; then
+	echo need swig version 2.0+
+	exit 1
+fi
+
+packagename='com.meganerd.sndfile'
+
+if [ -d "../../java" ]; then
+	packagepath="../../java/${packagename//.//}"
+	echo "packagepath is $packagepath"
+elif [ -d "../../src" ]; then
+	packagepath="../../src/${packagename//.//}"
+	echo "packagepath is $packagepath"
+else
+	echo "can not find java src path."
+	exit 1
+fi
+
+
+echo Cleaning directories
+
+rm -f libsndfile_wrap.*
+rm -f $packagepath/*.java
+rm -f $packagepath/*.class
+echo "done"
+echo
+
+if [ ! -d "$packagepath" ]; then
+	mkdir -p "$packagepath"
+fi
+echo "Generating Libaray..."
+swig -java -package $packagename -outdir $packagepath libsndfile.i
+

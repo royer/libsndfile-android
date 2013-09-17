@@ -1,0 +1,8 @@
+libsndfile-android is licensed under Apache License V2
+
+The following open source projects are used in libsndfile-android
+
+* libogg
+* libFLAC
+* libvorbis
+* libsndfile
