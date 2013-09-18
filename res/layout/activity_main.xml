@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:layout_width="match_parent"
@@ -7,20 +7,43 @@
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
-    tools:context=".MainActivity"
-    android:gravity="center_vertical">
+    tools:context=".MainActivity">
 
     <Button
         android:id="@+id/recordandstop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/startrecord"
-        android:layout_gravity="center" />
+        android:layout_gravity="center"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentLeft="true"
+        android:layout_marginBottom="46dp" />
 
     <Button
         android:id="@+id/playandstop"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/startplay"
-        android:layout_gravity="center" />
-</LinearLayout>
+        android:layout_gravity="center"
+        android:layout_alignTop="@+id/recordandstop"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="27dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Main Format"
+        android:id="@+id/textView"
+        android:layout_marginTop="14dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignLeft="@+id/recordandstop" />
+
+    <Spinner
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinMainFMT"
+        android:layout_alignParentTop="true"
+        android:layout_toRightOf="@+id/textView"
+        android:layout_marginLeft="3dp"
+        android:layout_alignBottom="@+id/textView" />
+</RelativeLayout>

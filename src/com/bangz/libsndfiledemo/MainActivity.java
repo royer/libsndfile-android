@@ -10,6 +10,7 @@ import android.os.Environment;
 import android.view.Menu;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Spinner;
 import android.widget.Toast;
 
 import com.meganerd.sndfile.CArrayShort;
@@ -75,6 +76,7 @@ public class MainActivity extends Activity
         btnPlay.setOnClickListener(this);
 
 
+        Spinner spinner = (Spinner)findViewById(R.id.spinMainFMT);
 
         updateButtonTextAndStatus();
     }
