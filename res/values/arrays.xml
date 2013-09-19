@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="main_format_name" >
+        <item>SF_FORMAT_WAV</item>
+        <item>SF_FORMAT_AIFF</item>
+        <item>SF_FORMAT_AU</item>
+        <item>SF_FORMAT_RAW</item>
+        <item>SF_FORMAT_PAF</item>
+        <item>SF_FORMAT_SVX</item>
+        <item>SF_FORMAT_NIST</item>
+        <item>SF_FORMAT_VOC</item>
+        <item>SF_FORMAT_IRCAM</item>
+        <item>SF_FORMAT_W64</item>
+        <item>SF_FORMAT_MAT4</item>
+        <item>SF_FORMAT_MAT5</item>
+        <item>SF_FORMAT_PVF</item>
+        <item>SF_FORMAT_XI</item>
+        <item>SF_FORMAT_HTK</item>
+        <item>SF_FORMAT_SDS</item>
+        <item>SF_FORMAT_AVR</item>
+        <item>SF_FORMAT_WAVEX</item>
+        <item>SF_FORMAT_SD2</item>
+        <item>SF_FORMAT_FLAC</item>
+        <item>SF_FORMAT_CAF</item>
+        <item>SF_FORMAT_WVE</item>
+        <item>SF_FORMAT_OGG</item>
+        <item>SF_FORMAT_MPC2K</item>
+        <item>SF_FORMAT_RF64</item>
+    </string-array>
+    <string-array name="sub_format_name">
+        <item>NOT SET</item>
+        <item>SF_FORMAT_PCM_S8</item>
+        <item>SF_FORMAT_PCM_16</item>
+        <item>SF_FORMAT_PCM_24</item>
+        <item>SF_FORMAT_PCM_32</item>
+        <item>SF_FORMAT_PCM_U8</item>
+        <item>SF_FORMAT_FLOAT</item>
+        <item>SF_FORMAT_DOUBLE</item>
+        <item>SF_FORMAT_ULAW</item>
+        <item>SF_FORMAT_ALAW</item>
+        <item>SF_FORMAT_IMA_ADPCM</item>
+        <item>SF_FORMAT_MS_ADPCM</item>
+        <item>SF_FORMAT_GSM610</item>
+        <item>SF_FORMAT_VOX_ADPCM</item>
+        <item>SF_FORMAT_G721_32</item>
+        <item>SF_FORMAT_G723_24</item>
+        <item>SF_FORMAT_G723_40</item>
+        <item>SF_FORMAT_DWVW_12</item>
+        <item>SF_FORMAT_DWVW_16</item>
+        <item>SF_FORMAT_DWVW_24</item>
+        <item>SF_FORMAT_DWVW_N</item>
+        <item>SF_FORMAT_DPCM_8</item>
+        <item>SF_FORMAT_DPCM_16</item>
+        <item>SF_FORMAT_VORBIS</item>
+        <item>SF_FORMAT_ALAC_16</item>
+        <item>SF_FORMAT_ALAC_20</item>
+        <item>SF_FORMAT_ALAC_24</item>
+        <item>SF_FORMAT_ALAC_32</item>
+    </string-array>
+
+    <integer-array name="main_format">
+        <item>0x010000</item> <!-- SF_FORMAT_WAV -->
+        <item>0x020000</item> <!-- SF_FORMAT_AIFF -->
+        <item>0x030000</item> <!-- SF_FORMAT_AU -->
+        <item>0x040000</item> <!-- SF_FORMAT_RAW -->
+        <item>0x050000</item> <!-- SF_FORMAT_PAF -->
+        <item>0x060000</item> <!-- SF_FORMAT_SVX -->
+        <item>0x070000</item> <!-- SF_FORMAT_NIST -->
+        <item>0x080000</item> <!-- SF_FORMAT_VOC -->
+        <item>0x0A0000</item> <!-- SF_FORMAT_IRCAM -->
+        <item>0x0B0000</item> <!-- SF_FORMAT_W64 -->
+        <item>0x0C0000</item> <!-- SF_FORMAT_MAT4 -->
+        <item>0x0D0000</item> <!-- SF_FORMAT_MAT5 -->
+        <item>0x0E0000</item> <!-- SF_FORMAT_PVF -->
+        <item>0x0F0000</item> <!-- SF_FORMAT_XI -->
+        <item>0x100000</item> <!-- SF_FORMAT_HTK -->
+        <item>0x110000</item> <!-- SF_FORMAT_SDS -->
+        <item>0x120000</item> <!-- SF_FORMAT_AVR -->
+        <item>0x130000</item> <!-- SF_FORMAT_WAVEX -->
+        <item>0x160000</item> <!-- SF_FORMAT_SD2 -->
+        <item>0x170000</item> <!-- SF_FORMAT_FLAC -->
+        <item>0x180000</item> <!-- SF_FORMAT_CAF -->
+        <item>0x190000</item> <!-- SF_FORMAT_WVE -->
+        <item>0x200000</item> <!-- SF_FORMAT_OGG -->
+        <item>0x210000</item> <!-- SF_FORMAT_MPC2K -->
+        <item>0x220000</item> <!-- SF_FORMAT_RF64 -->
+    </integer-array>
+
+    <integer-array name="sub_format">
+        <item>0x0000</item>
+        <item>0x0001</item> <!-- SF_FORMAT_PCM_S8    -->
+        <item>0x0002</item> <!-- SF_FORMAT_PCM_16    -->
+        <item>0x0003</item> <!-- SF_FORMAT_PCM_24    -->
+        <item>0x0004</item> <!-- SF_FORMAT_PCM_32    -->
+        <item>0x0005</item> <!-- SF_FORMAT_PCM_U8    -->
+        <item>0x0006</item> <!-- SF_FORMAT_FLOAT     -->
+        <item>0x0007</item> <!-- SF_FORMAT_DOUBLE    -->
+        <item>0x0010</item> <!-- SF_FORMAT_ULAW      -->
+        <item>0x0011</item> <!-- SF_FORMAT_ALAW      -->
+        <item>0x0012</item> <!-- SF_FORMAT_IMA_ADPCM -->
+        <item>0x0013</item> <!-- SF_FORMAT_MS_ADPCM  -->
+        <item>0x0020</item> <!-- SF_FORMAT_GSM610    -->
+        <item>0x0021</item> <!-- SF_FORMAT_VOX_ADPCM -->
+        <item>0x0030</item> <!-- SF_FORMAT_G721_32   -->
+        <item>0x0031</item> <!-- SF_FORMAT_G723_24   -->
+        <item>0x0032</item> <!-- SF_FORMAT_G723_40   -->
+        <item>0x0040</item> <!-- SF_FORMAT_DWVW_12   -->
+        <item>0x0041</item> <!-- SF_FORMAT_DWVW_16   -->
+        <item>0x0042</item> <!-- SF_FORMAT_DWVW_24   -->
+        <item>0x0043</item> <!-- SF_FORMAT_DWVW_N    -->
+        <item>0x0050</item> <!-- SF_FORMAT_DPCM_8    -->
+        <item>0x0051</item> <!-- SF_FORMAT_DPCM_16   -->
+        <item>0x0060</item> <!-- SF_FORMAT_VORBIS    -->
+        <item>0x0070</item> <!-- SF_FORMAT_ALAC_16   -->
+        <item>0x0071</item> <!-- SF_FORMAT_ALAC_20   -->
+        <item>0x0072</item> <!-- SF_FORMAT_ALAC_24   -->
+        <item>0x0073</item> <!-- SF_FORMAT_ALAC_32   -->
+    </integer-array>
+    <string-array name="ext">
+        <item>.WAV</item>
+        <item>.AIFF</item>
+        <item>.AU</item>
+        <item>.RAW</item>
+        <item>.PAF</item>
+        <item>.SVX</item>
+        <item>.NIST</item>
+        <item>.VOC</item>
+        <item>.IRCAM</item>
+        <item>.W64</item>
+        <item>.MAT4</item>
+        <item>.MAT5</item>
+        <item>.PVF</item>
+        <item>.XI</item>
+        <item>.HTK</item>
+        <item>.SDS</item>
+        <item>.AVR</item>
+        <item>.WAVEX</item>
+        <item>.SD2</item>
+        <item>.FLAC</item>
+        <item>.CAF</item>
+        <item>.WVE</item>
+        <item>.OGG</item>
+        <item>.MPC2K</item>
+        <item>.RF64</item>
+    </string-array>
+</resources>

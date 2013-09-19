@@ -1,14 +1,18 @@
 package com.bangz.libsndfiledemo;
 
 import android.media.AudioFormat;
+import android.media.AudioManager;
 import android.media.AudioRecord;
+import android.media.MediaPlayer;
 import android.media.MediaRecorder;
 import android.os.Build;
 import android.os.Bundle;
 import android.app.Activity;
 import android.os.Environment;
+import android.util.Log;
 import android.view.Menu;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -19,9 +23,10 @@ import com.meganerd.sndfile.SWIGTYPE_p_SNDFILE_tag;
 import com.meganerd.sndfile.libsndfile;
 
 import java.io.File;
+import java.io.IOException;
 
 public class MainActivity extends Activity
-        implements View.OnClickListener{
+        implements View.OnClickListener, MediaPlayer.OnPreparedListener, MediaPlayer.OnCompletionListener, MediaPlayer.OnErrorListener {
 
     private static final  String TAG = "sndfile.demo.main";
 
@@ -44,7 +49,12 @@ public class MainActivity extends Activity
      */
     private boolean bRecorded = false ;
 
-    private static final String SNDFILENAME = "sndfiletest.ogg" ;
+    int[] mainfmts;
+    int[] subfmts ;
+    String[] exts ;
+
+    private static final String SNDFILENAME = "sndfiletest" ;
+
     private String filepath = null ;
     private String filename = SNDFILENAME ;
 
@@ -57,10 +67,13 @@ public class MainActivity extends Activity
     private int nSampleRate = DEFAULT_SAMPLERATE;
     private int nChannels = DEFAULT_CHANNELS;
     private int nAudioFormat = DEFAULT_AUDIOFORMAT ;
+    private int sndfileFormat = 0 ;
 
 
     AudioRecord recorder ;
     RecordThread recordThread;
+
+    MediaPlayer mediaplayer = null ;
 
     protected String errormsg ;
 
@@ -76,7 +89,25 @@ public class MainActivity extends Activity
         btnPlay.setOnClickListener(this);
 
 
-        Spinner spinner = (Spinner)findViewById(R.id.spinMainFMT);
+        Spinner spinnerMain = (Spinner)findViewById(R.id.spinMainFMT);
+        ArrayAdapter<CharSequence> adaptermain =
+                ArrayAdapter.createFromResource(this,
+                        R.array.main_format_name,
+                        android.R.layout.simple_spinner_item);
+        adaptermain.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerMain.setAdapter(adaptermain);
+
+        Spinner spinnerSub = (Spinner)findViewById(R.id.spinSubFMT);
+        ArrayAdapter<CharSequence> adaptersub =
+                ArrayAdapter.createFromResource(this,
+                        R.array.sub_format_name,
+                        android.R.layout.simple_spinner_item);
+        adaptersub.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinnerSub.setAdapter(adaptersub);
+
+        mainfmts = getResources().getIntArray(R.array.main_format);
+        subfmts = getResources().getIntArray(R.array.sub_format);
+        exts = getResources().getStringArray(R.array.ext);
 
         updateButtonTextAndStatus();
     }
@@ -96,7 +127,7 @@ public class MainActivity extends Activity
         }
 
         btnRecord.setEnabled(iState == STATE_NONE || iState == STATE_RECORDING);
-        btnPlay.setEnabled(/*bRecorded == true && */(iState == STATE_NONE || iState == STATE_PLAYING));
+        btnPlay.setEnabled(bRecorded == true && (iState == STATE_NONE || iState == STATE_PLAYING));
 
 
     }
@@ -106,6 +137,17 @@ public class MainActivity extends Activity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
         return true;
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        if (iState == STATE_RECORDING) {
+            stopRecord();
+        } else if (iState == STATE_PLAYING) {
+            stopPlaying();
+        }
     }
 
     @Override
@@ -122,12 +164,11 @@ public class MainActivity extends Activity
 
         if (iState == STATE_RECORDING) {
             stopRecord();
-        } else if (iState == STATE_NONE && startRecord() == true) {
+        } else if (iState == STATE_NONE) {
 
-            iState = STATE_RECORDING ;
+            startRecord();
         }
 
-        updateButtonTextAndStatus();
     }
 
 
@@ -146,15 +187,21 @@ public class MainActivity extends Activity
 
         nBuffersize = Math.max(nBuffersize, 4096) ;
 
-        if (filepath == null)
-            filepath = getfilepath();
+        filepath = getfilepath();
+
+        getSavedFormat();
 
         recorder = new AudioRecord(MediaRecorder.AudioSource.MIC,
                 nSampleRate, nChannels, nAudioFormat,
                 nBuffersize);
 
+        errormsg = null ;
+
         recordThread = new RecordThread();
         bRecording = true ;
+        iState = STATE_RECORDING ;
+        updateButtonTextAndStatus();
+
         recorder.startRecording();
         recordThread.start();
         return true ;
@@ -164,24 +211,64 @@ public class MainActivity extends Activity
         bRecording = false;
     }
 
+    private void getSavedFormat() {
+
+        Spinner spinnerMain = (Spinner)findViewById(R.id.spinMainFMT);
+        Spinner spinnerSub = (Spinner)findViewById(R.id.spinSubFMT);
+
+        sndfileFormat =
+                mainfmts[spinnerMain.getSelectedItemPosition()]
+                        | subfmts[spinnerSub.getSelectedItemPosition()];
+    }
+
     private void onPlayandStopButtonClick() {
 
         if (iState == STATE_PLAYING) {
             stopPlaying();
-            iState = STATE_NONE ;
 
         } else if (iState == STATE_NONE ) {
             startPlaying();
-            iState = STATE_PLAYING ;
         }
 
         updateButtonTextAndStatus();
     }
 
     private void startPlaying() {
+        if (mediaplayer != null) {
+            mediaplayer.release();
+        }
+
+        mediaplayer = new MediaPlayer();
+        mediaplayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
+        mediaplayer.setOnPreparedListener(this);
+        mediaplayer.setOnCompletionListener(this);
+        mediaplayer.setOnErrorListener(this);
+
+        try {
+            mediaplayer.setDataSource(filepath);
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (IllegalStateException e) {
+            e.printStackTrace();
+        } catch (IllegalArgumentException e) {
+            e.printStackTrace();
+        }
+
+        mediaplayer.prepareAsync();
+
+        iState = STATE_PLAYING;
+        updateButtonTextAndStatus();
     }
 
     private void stopPlaying() {
+         if (mediaplayer != null) {
+             mediaplayer.stop();
+             mediaplayer.release();
+             mediaplayer = null;
+         }
+        iState = STATE_NONE;
+
+        updateButtonTextAndStatus();
     }
 
     private boolean isWritableExternalStorage() {
@@ -196,6 +283,10 @@ public class MainActivity extends Activity
     }
 
     private String getfilepath() {
+
+        Spinner spinner = (Spinner)findViewById(R.id.spinMainFMT);
+        String ext = exts[spinner.getSelectedItemPosition()];
+        filename = SNDFILENAME + ext ;
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.FROYO) {
             // Android version >= 8
@@ -216,6 +307,33 @@ public class MainActivity extends Activity
         }
     }
 
+    @Override
+    public void onPrepared(MediaPlayer mp) {
+        mediaplayer.start();
+    }
+
+    @Override
+    public void onCompletion(MediaPlayer mp) {
+
+        mediaplayer.stop();
+        mediaplayer.release();
+        mediaplayer = null ;
+        iState = STATE_NONE ;
+
+        updateButtonTextAndStatus();
+    }
+
+    @Override
+    public boolean onError(MediaPlayer mp, int what, int extra) {
+        mp.release();
+        if (mp == mediaplayer) {
+            mediaplayer = null ;
+            iState = STATE_NONE ;
+            updateButtonTextAndStatus();
+        }
+        return false;
+    }
+
     private class RecordThread extends Thread {
 
         @Override
@@ -227,7 +345,7 @@ public class MainActivity extends Activity
             SF_INFO sfInfo = new SF_INFO();
             sfInfo.setSamplerate(nSampleRate);
             sfInfo.setChannels(nChannels == AudioFormat.CHANNEL_IN_MONO?1:2);
-            sfInfo.setFormat(libsndfile.SF_FORMAT_OGG | libsndfile.SF_FORMAT_VORBIS);
+            sfInfo.setFormat(sndfileFormat);
 
             SWIGTYPE_p_SNDFILE_tag sndfile = libsndfile.sf_open(filepath, libsndfile.SFM_WRITE, sfInfo);
             if (sndfile == null) {
@@ -243,6 +361,7 @@ public class MainActivity extends Activity
                 return ;
             }
 
+            long totalwrited = 0;
 
             CArrayShort tosndbuff = new CArrayShort(nBuffersize/2);
             while (bRecording) {
@@ -265,12 +384,20 @@ public class MainActivity extends Activity
                     bRecording = false ;
                     break;
                 }
+                totalwrited += w ;
 
             }
 
             //save file
             libsndfile.sf_close(sndfile);
-            bRecorded = true ;
+            if (totalwrited > 0) {
+                bRecorded = true ;
+            } else {
+                Log.d(TAG, "not audio data be writed!.");
+                File f = new File(filepath) ;
+                f.delete();
+                bRecorded = false;
+            }
 
             recorder.stop();
             recorder.release();

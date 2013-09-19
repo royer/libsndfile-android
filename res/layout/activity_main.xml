@@ -32,18 +32,32 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Main Format"
+        android:text="Main Format:"
         android:id="@+id/textView"
-        android:layout_marginTop="14dp"
+        android:layout_marginTop="11dp"
         android:layout_alignParentTop="true"
-        android:layout_alignLeft="@+id/recordandstop" />
+        android:layout_alignParentLeft="true" />
 
     <Spinner
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:id="@+id/spinMainFMT"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/textView"
-        android:layout_marginLeft="3dp"
-        android:layout_alignBottom="@+id/textView" />
+        android:layout_below="@+id/textView"
+        android:layout_alignLeft="@+id/textView" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Sub Format:"
+        android:id="@+id/textView2"
+        android:layout_below="@+id/spinMainFMT"
+        android:layout_alignLeft="@+id/spinMainFMT"
+        android:layout_marginTop="11dp" />
+
+    <Spinner
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/spinSubFMT"
+        android:layout_below="@+id/textView2"
+        android:layout_alignParentLeft="true" />
 </RelativeLayout>
